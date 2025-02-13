@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metro County Property Sale Analysis</title>
+</head>
+<body>
+    <h1 id="metro-area-residential-property-sale-analysis">Metro Area Residential Property Sale Analysis</h1>
+        <p>This project contains residential housing sale data from 3 Metro Twin Cities Counties: Anoka, Hennepin, and Ramsey. 
+            The inital project was to include all 7 of the Metro area counties listed below:</p>
+            <ul>
+            <li>Anoka</li>
+            <li>Carver</li>
+            <li>Dakota</li>
+            <li>Hennepin</li>
+            <li>Ramsey</li>
+            <li>Scott</li>
+            <li>Washington</li>
+            </ul>
+        <p>However, some county Recorders require paid subscriptions to access property sale data, charging as much as $2.00 per document viewed. 
+            Others were interactive maps ONLY, without any way to mass-export data. Because I&#39;m a regular guy I&#39;m not going to pay that much, 
+            nor do I have a leisure time to spend doing so. Mercifully, the <a href="https://www.mngeo.state.mn.us/chouse/land_own_property.html" target="_blank">Minnesota Geospatial Information Office</a> 
+            contained many county land ownership property parcel datasets, which included property sale information. The Hennepin County dataset was 
+            pulled from here.</p>
+    <h3 id="anoka-county">Anoka County</h3>
+        <p>Anoka residential property sale data was downloaded from the <a href="https://prtpublicweb.co.anoka.mn.us/Search/Disclaimer.aspx?FromUrl=../search/commonsearch.aspx?mode=combined" target="_blank">
+            Anoka county website</a>and filtered by month and property type Class 1. According to <a href="https://www.revisor.mn.gov/statutes/cite/273.13" target="_blank">MN Statute 273.13</a> 
+            Class 1 is divided into two main residential property classes: Class 1a properties are &quot;real estate which is residential and used for 
+            homestead purposes,&quot; and Class 1b is the same except for people with disabilities. </p>
+
+    <h3 id="ramsey-county">Ramsey County</h3>
+        <p>Ramsey County property sale data was filtered by month, year, and property type (residential), then downloaded from their 
+            <a href="https://beacon.schneidercorp.com/application.aspx?AppID=959&amp;LayerID=18852&amp;PageTypeID=2&amp;PageID=12460" target="_blank">property search tool</a>.</p>
+
+    <h3 id="hennepin-county">Hennepin County</h3>
+        <p>Hennepin County property sale and ownership data was downloaded from the MN Geospatial Information Office as listed above. 
+            It was then filtered by property type (residential).</p>
+
+    <h3 id="methodology">Methodology</h3>
+        <p>Because each county&#39;s property recording methods were different, each county&#39;s set of data had to be cleaned, processed, and analyzed 
+            separately. A Jupyter Notebook is paired with with each county&#39;s data reflecting this. All analysis was done in Python.</p>
+
+        <p>The datasets are stored in <a href="https://drive.google.com/drive/folders/1cS7rAx7aTUBgCL5Cc7dEgp9wJ9heTmem?usp=drive_link" target="_blank">Google Drive</a> because of their size.</p>
+
+        <p><strong>Anoka</strong> data was the most time-intensive to clean, process, and analyze, as it was organized in month or half-month chunks. 
+            The Anoka property search only allowed 1000 records to be exported at a time, so if a month contained more than 1000 home sales, the data 
+            range was filtered for half the month to avoid this limit. Furthermore, sales dates were not able to be included in the typical property 
+            sale export; they had to be exported separately. There are essentially two files per month: one containing the sales date, and another 
+            containing the seller/buyer info, property info, etc.</p>
+
+        <p>The datasets were only extractable as PDFs, although the data was in tabular format. PDF Plumber was used to extract the rows of data and 
+            then combined it into Pandas DataFrames, a set for sales dates and a set for remaining sales information. Sales dates were strings and 
+            needed to be converted to datetime objects for later grouping. For some reason (my email to the county remains unanswered) there are some 
+            duplicate parcel numbers in each dataset. Duplicate parcel numbers did not allow joining and so were dropped, keeping the last duplicate. 
+            Once duplicates were dropped and the date column was converted, the date and sales info DataFrames were then joined using the property ID 
+            numbers (parcel numbers), and the total sales counted and grouped by month of sale before putting that series into a DataFrame (for later 
+            joining).</p>
+
+        <p>A piped string list was created to search property owner name strings containing:</p>
+        <p><img src="assets/privEquiRegex.png" alt="Private Equity String Search"></p>
+            
+        <p>Properties with any of the above strings in the owner name were kept, then the sales were counted and grouped by month (like total sales above).
+             This series of total sales to private equity by month totals was added into the total sales by month DataFrame above. The percentage of total 
+             sales to private equity metric was then calculated as a new fourth column with the final DataFrame output below:</p>  
+        <p><img src="assets/totaldf.png" alt="Total DataFrame"></p>
+
+        <p>This process was done six times, once for each year from 2019-2024, and each resulting DataFrame was outputed as a <code>csv</code>. 
+            Those files were then read back in, the year added as a string before each January on each DataFrame, and finally they were all joined 
+            into one large DataFrame. This DataFrame was then plotted using Matplotlib.</p> 
+        <p><img src="assets/AnokaCounty201Sales_2019_2024.png" alt="Anoka Property Sale Data 2019-2024"></p>
+
+        <p><strong>Ramsey</strong> county was much easier than Anoka since an entire year could be exported as an <code>xlsx</code> file. 
+            Each year file was read into a Pandas DataFrame, then filtered to three columns: Sale Date, Land Use, and Tax Payer Names. Next, 
+            the property type (Land Use) was filtered by <code>R - SINGLE FAMILY DWELLING, PLATTED LOT</code> as this was the most common residential 
+            property type. Sales were then counted and grouped by month of sale, put into a DataFrame, and then the filtered DataFrame filtered again 
+            by the Tax Payer Name containing any of the private equity strings. Sales to private equity were counted and grouped by month, with the 
+            resulting series added as a new column to the total sales DataFrame. Finally, the sales to private equity metric was then calculated and
+             added as the fourth column. This process was done six times, once for each year from 2019-2024, and each DataFrame was exported as a 
+             <code>csv</code>.</p>
+
+        <p>Those files were then read back in, the year added as a string before each January on each DataFrame, and finally they were all joined 
+            into one large DataFrame. This DataFrame was then plotted using Matplotlib.</p>
+        <p><img src="assets/RamseyCountyPrivEqu2019_2024.png" alt="Ramsey Proprty Sale Data 2019-2024"></p>
+
+        <p><strong>Hennepin</strong> county was a large <code>csv</code> file (360MB) containing all property parcels in Hennepin county. 
+            This data was filtered by property type (residential), then filtered for only sales dates containing the year strings from 2019-2024 
+            (the sales date is only listed as month and year in this dataset). The DataFrame is then filtered down to three columns: Property ID, 
+            Owner Name, and Sales Date. The year and month of sales were made their own respective columns by pulling them from the initial sales 
+            date string. The original sales date column was then dropped.</p>
+
+        <p>A DataFrame was then created for each year of sale from 2019-2024, and each DataFrame of sales was then counted and grouped by month 
+            before being put into a new DataFrame. The year DataFrames containing the owner name were then filtered again by the private equity 
+            string pattern, and finally the sales to private equity were counted and grouped by month. This series was added to the total sales 
+            DataFrame, and a fourth column for the percentage of total sales to private equity was calculated.</p>
+
+        <p>Since these DataFrames were extracted from one large DataFrame, no exporting/importing was needed. The resulting six DataFrames had 
+            the year string added into each month column containing January, the DataFrames were concatenated, and the result plotted with Matplotlib.</p>
+        <p><img src="assets/HennepinCountySales2019_2024.png" alt="Hennepin Property Sales Data 2019-2024"></p>
+
+    <h3 id="analysis">Analysis</h3>
+        <p>There is a clear trend up and to the right in all three graphs, indicating an increasing presence of private equity in the residential 
+            housing market in all three counties. There is a further pattern of private equity typically buying residential property in the winter 
+            months when regular consumer demand, and therefore price, is low.</p>
+
+        <p>Further analysis could be done on surrounding home values to see if there is any effect on overall market prices due to the presence 
+            of private equity. Additionally, a more detailed analysis of the distribution of private equity entities would be insightful. This would
+            show how many distinct entities are active in the residential housing market, as well as their concentration and size of presence.
+             However, I don&#39;t have the time for that analysis (someone please do it, it&#39;d be very interesting).</p>
+
+    <h3 id="recommndations">Recommndations</h3>
+        <p>Regular people buy regular homes to do regular life things. In an already supply-starved market, the fact that private equity can 
+            swoop in with loads of liquid cash and outbid regular people is, in my mind, a travesty that should not be allowed to happen. 
+            Furthermore, a housing market&#39;s purpose is to allow people to buy a house to live in, not a smorgasboard for someone&#39;s 
+            investment portfolio. Markets typically function effeciently and effectively when the playing field is level (i.e., competitive; 
+            when the players are fairly equal). How is it fair or competitive when I have $10,000 for a down payment while some hedge fund 
+            has the full market price in cash? The power imbalance is clear, and my Christian convictions drive me to favor the less powerful 
+            over the more powerful. The presence of private equity in the residentail housing market is, above all, a moral concern to me.</p>
+
+        <p>There are likely many local or state policies which could be enacted to combat the presence of private equity in the residential housing 
+            market. I recommend those entities do so and support the regular families in our communities.</p>
+
+</body>
+</html>
