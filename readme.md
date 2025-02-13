@@ -30,13 +30,13 @@ The datasets are stored in [Google Drive](https://drive.google.com/drive/folders
 The datasets were only extractable as PDFs, although the data was in tabular format. PDF Plumber was used to extract the rows of data and then combined it into Pandas DataFrames, a set for sales dates and a set for remaining sales information. Sales dates were strings and needed to be converted to datetime objects for later grouping. For some reason (my email to the county remains unanswered) there are some duplicate parcel numbers in each dataset. Duplicate parcel numbers did not allow joining and so were dropped, keeping the last duplicate. Once duplicates were dropped and the date column was converted, the date and sales info DataFrames were then joined using the property ID numbers (parcel numbers), and the total sales counted and grouped by month of sale before putting that series into a DataFrame (for later joining).
 
 A piped string list was created to search property owner name strings containing:
-[Private Equity String Search](assets/privEquiRegex.png)
+![Private Equity String Search](assets/privEquiRegex.png)
 
 Properties with any of the above strings in the owner name were kept, then the sales were counted and grouped by month (like total sales above). This series of total sales to private equity by month totals was added into the total sales by month DataFrame above. The percentage of total sales to private equity metric was then calculated as a new fourth column with the final DataFrame output below:
-[Total DataFrame](assets/totaldf.png)
+![Total DataFrame](assets/totaldf.png)
 
 This process was done six times, once for each year from 2019-2024, and each resulting DataFrame was outputed as a `csv`. Those files were then read back in, the year added as a string before each January on each DataFrame, and finally they were all joined into one large DataFrame. This DataFrame was then plotted using Matplotlib.
-[Anoka Property Sale Data 2019-2024](assets/AnokaCounty201Sales_2019_2024.png)
+![Anoka Property Sale Data 2019-2024](assets/AnokaCounty201Sales_2019_2024.png)
 
 **Ramsey** county was much easier than Anoka since an entire year could be exported as an `xlsx` file. Each year file was read into a Pandas DataFrame, then filtered to three columns: Sale Date, Land Use, and Tax Payer Names. Next, the property type (Land Use) was filtered by `R - SINGLE FAMILY DWELLING, PLATTED LOT` as this was the most common residential property type. Sales were then counted and grouped by month of sale, put into a DataFrame, and then the filtered DataFrame filtered again by the Tax Payer Name containing any of the private equity strings. Sales to private equity were counted and grouped by month, with the resulting series added as a new column to the total sales DataFrame. Finally, the sales to private equity metric was then calculated and added as the fourth column. This process was done six times, once for each year from 2019-2024, and each DataFrame was exported as a `csv`.
 
@@ -48,7 +48,7 @@ Those files were then read back in, the year added as a string before each Janua
 A DataFrame was then created for each year of sale from 2019-2024, and each DataFrame of sales was then counted and grouped by month before being put into a new DataFrame. The year DataFrames containing the owner name were then filtered again by the private equity string pattern, and finally the sales to private equity were counted and grouped by month. This series was added to the total sales DataFrame, and a fourth column for the percentage of total sales to private equity was calculated.
 
 Since these DataFrames were extracted from one large DataFrame, no exporting/importing was needed. The resulting six DataFrames had the year string added into each month column containing January, the DataFrames were concatenated, and the result plotted with Matplotlib.
-[Hennepin Property Sales Data 2019-2024](assets/HennepinCountySales2019_2024.png)
+![Hennepin Property Sales Data 2019-2024](assets/HennepinCountySales2019_2024.png)
 
 ### Analysis
 There is a clear trend up and to the right in all three graphs, indicating an increasing presence of private equity in the residential housing market in all three counties. There is a further pattern of private equity typically buying residential property in the winter months when regular consumer demand, and therefore price, is low.
