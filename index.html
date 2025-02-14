@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Metro County Property Sale Analysis</title>
+
+    <link rel="stylesheet" href="/style/styles.css">
 </head>
 <body>
     <h1 id="metro-area-residential-property-sale-analysis">Metro Area Residential Property Sale Analysis</h1>
@@ -20,9 +22,10 @@
             </ul>
         <p>However, some county Recorders require paid subscriptions to access property sale data, charging as much as $2.00 per document viewed. 
             Others were interactive maps ONLY, without any way to mass-export data. Because I&#39;m a regular guy I&#39;m not going to pay that much, 
-            nor do I have a leisure time to spend doing so. Mercifully, the <a href="https://www.mngeo.state.mn.us/chouse/land_own_property.html" target="_blank">Minnesota Geospatial Information Office</a> 
+            nor do I have the leisure time to spend doing so. Mercifully, the <a href="https://www.mngeo.state.mn.us/chouse/land_own_property.html" target="_blank">Minnesota Geospatial Information Office</a> 
             contained many county land ownership property parcel datasets, which included property sale information. The Hennepin County dataset was 
             pulled from here.</p>
+
     <h3 id="anoka-county">Anoka County</h3>
         <p>Anoka residential property sale data was downloaded from the <a href="https://prtpublicweb.co.anoka.mn.us/Search/Disclaimer.aspx?FromUrl=../search/commonsearch.aspx?mode=combined" target="_blank">
             Anoka county website</a>and filtered by month and property type Class 1. According to <a href="https://www.revisor.mn.gov/statutes/cite/273.13" target="_blank">MN Statute 273.13</a> 
@@ -39,7 +42,8 @@
 
     <h3 id="methodology">Methodology</h3>
         <p>Because each county&#39;s property recording methods were different, each county&#39;s set of data had to be cleaned, processed, and analyzed 
-            separately. A Jupyter Notebook is paired with with each county&#39;s data reflecting this. All analysis was done in Python.</p>
+            separately. A Jupyter Notebook is paired with with each county&#39;s data reflecting this. All analysis was done in Python, and visualizations
+            were made with Matplotlib.</p>
 
         <p>The datasets are stored in <a href="https://drive.google.com/drive/folders/1cS7rAx7aTUBgCL5Cc7dEgp9wJ9heTmem?usp=drive_link" target="_blank">Google Drive</a> because of their size.</p>
 
@@ -68,7 +72,7 @@
         <p>This process was done six times, once for each year from 2019-2024, and each resulting DataFrame was outputed as a <code>csv</code>. 
             Those files were then read back in, the year added as a string before each January on each DataFrame, and finally they were all joined 
             into one large DataFrame. This DataFrame was then plotted using Matplotlib.</p> 
-        <p><img src="assets/AnokaCounty201Sales_2019_2024.png" alt="Anoka Property Sale Data 2019-2024"></p>
+        <p><img src="assets/AnokaCounty201Sales_2019_2024.png" alt="Anoka Property Sale Data 2019-2024" height="700" width="1100"></p>
 
         <p><strong>Ramsey</strong> county was much easier than Anoka since an entire year could be exported as an <code>xlsx</code> file. 
             Each year file was read into a Pandas DataFrame, then filtered to three columns: Sale Date, Land Use, and Tax Payer Names. Next, 
@@ -81,7 +85,7 @@
 
         <p>Those files were then read back in, the year added as a string before each January on each DataFrame, and finally they were all joined 
             into one large DataFrame. This DataFrame was then plotted using Matplotlib.</p>
-        <p><img src="assets/RamseyCountyPrivEqu2019_2024.png" alt="Ramsey Proprty Sale Data 2019-2024"></p>
+        <p><img src="assets/RamseyCountyPrivEqu2019_2024.png" alt="Ramsey Proprty Sale Data 2019-2024" height="700" width="1100"></p>
 
         <p><strong>Hennepin</strong> county was a large <code>csv</code> file (360MB) containing all property parcels in Hennepin county. 
             This data was filtered by property type (residential), then filtered for only sales dates containing the year strings from 2019-2024 
@@ -96,7 +100,7 @@
 
         <p>Since these DataFrames were extracted from one large DataFrame, no exporting/importing was needed. The resulting six DataFrames had 
             the year string added into each month column containing January, the DataFrames were concatenated, and the result plotted with Matplotlib.</p>
-        <p><img src="assets/HennepinCountySales2019_2024.png" alt="Hennepin Property Sales Data 2019-2024"></p>
+        <p><img src="assets/HennepinCountySales2019_2024.png" alt="Hennepin Property Sales Data 2019-2024" height="700" width="1100"></p>
 
     <h3 id="analysis">Analysis</h3>
         <p>There is a clear trend up and to the right in all three graphs, indicating an increasing presence of private equity in the residential 
@@ -119,6 +123,8 @@
 
         <p>There are likely many local or state policies which could be enacted to combat the presence of private equity in the residential housing 
             market. I recommend those entities do so and support the regular families in our communities.</p>
+
+    <footer>Data cleaned, analyzed, and visualized by <a href="https://conorwhanson.github.io/portfolio/" target = "_blank">Conor Hanson</a></footer>
 
 </body>
 </html>

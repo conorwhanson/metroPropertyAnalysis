@@ -1,0 +1,27 @@
+body {
+    background-color: antiquewhite;
+}
+
+h1 {
+    font-family:  Tahoma;
+}
+
+h3 {
+    font-family: Tahoma;
+}
+
+p {
+    font-family: sans-serif;
+}
+
+ul {
+    font-family: Tahoma;
+}
+
+img {
+    border: 2px solid #000;
+  }
+
+footer {
+    font-size: x-small;
+}
