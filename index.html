@@ -77,10 +77,10 @@
         <p><strong>Ramsey</strong> county was much easier than Anoka since an entire year could be exported as an <code>xlsx</code> file. 
             Each year file was read into a Pandas DataFrame, then filtered to three columns: Sale Date, Land Use, and Tax Payer Names. Next, 
             the property type (Land Use) was filtered by <code>R - SINGLE FAMILY DWELLING, PLATTED LOT</code> as this was the most common residential 
-            property type. Sales were then counted and grouped by month of sale, put into a DataFrame, and then the filtered DataFrame filtered again 
-            by the Tax Payer Name containing any of the private equity strings. Sales to private equity were counted and grouped by month, with the 
+            property type. Sales were then counted and grouped by month of sale, put into a DataFrame, and then the filtered DataFrame was filtered again 
+            by the <code>Tax Payer Name</code> containing any of the private equity strings. Sales to private equity were counted and grouped by month, with the 
             resulting series added as a new column to the total sales DataFrame. Finally, the sales to private equity metric was then calculated and
-             added as the fourth column. This process was done six times, once for each year from 2019-2024, and each DataFrame was exported as a 
+            added as the fourth column. This process was done six times, once for each year from 2019-2024, and each DataFrame was exported as a 
              <code>csv</code>.</p>
 
         <p>Those files were then read back in, the year added as a string before each January on each DataFrame, and finally they were all joined 
@@ -124,7 +124,8 @@
             of our communities?</p>
 
         <p>There are likely many local or state policies which could be enacted to combat the presence of private equity in the residential housing 
-            market. I recommend we do so and support the regular families in our communities.</p>
+            market, from extra taxes on vacant properties based on market value, to outright banning private equity in the residential housing market. 
+            I recommend we look at multiple options so as to support the regular families in our communities.</p>
 
     <footer>Data cleaned, analyzed, and visualized by <a href="https://conorwhanson.github.io/portfolio/" target = "_blank">Conor Hanson</a></footer>
 
